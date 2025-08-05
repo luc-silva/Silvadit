@@ -1,4 +1,5 @@
 import { ChangeEvent, useState } from 'react';
+import { loginUser } from '~/service/user';
 
 export const useLoginPage = () => {
   const [login, setLogin] = useState('');
@@ -15,5 +16,18 @@ export const useLoginPage = () => {
     setPassword(target.value);
   };
 
-  return { login, password, handleLogin, handlePassword };
+  const [isLoginLoading, setIsLoginLoading] = useState(false);
+  const loadLogin = async () => {
+    setIsLoginLoading(true);
+    return await loginUser({ login, password });
+  };
+
+  return {
+    login,
+    password,
+    handleLogin,
+    handlePassword,
+    loadLogin,
+    isLoginLoading,
+  };
 };

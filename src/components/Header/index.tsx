@@ -7,7 +7,6 @@ import {
   User,
 } from '@phosphor-icons/react';
 import { useMemo, useState, useRef, useEffect } from 'react';
-import { Logo } from '../Logo';
 
 export const Header = () => {
   const location = useLocation();
@@ -37,7 +36,6 @@ export const Header = () => {
       <div className="max-w-7xl mx-auto flex items-center justify-between gap-4">
         {/* Logo */}
         <div className="flex items-center gap-2">
-          <Logo />
           <span className="text-lg font-semibold">SilvaDit</span>
         </div>
 
@@ -68,7 +66,7 @@ export const Header = () => {
             className="w-9 h-9 rounded-full overflow-hidden border border-base-border hover:ring-2 ring-base-primary transition"
           >
             <img
-              src={"avatarPlaceholder"}
+              src={'avatarPlaceholder'}
               alt="avatar"
               className="w-full h-full object-cover"
             />

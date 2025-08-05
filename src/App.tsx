@@ -14,6 +14,7 @@ import ForumPageMain from './pages/forumMain';
 import { ForumPage } from './pages/forum';
 import { SearchPage } from './pages/search';
 import { PostPage } from './pages/post';
+import './_global.css';
 
 function App() {
   return (

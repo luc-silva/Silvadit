@@ -1,15 +1,18 @@
-import { TextField } from '@mui/material';
+import { Button, TextField } from '@mui/material';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useLoginPage } from './hooks';
 
 export function LoginPage() {
-  const { handleLogin, handlePassword, login, password } = useLoginPage();
+  const { handleLogin, handlePassword, login, password, loadLogin } =
+    useLoginPage();
   const navigate = useNavigate();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Aqui você trataria a autenticação
+    await loadLogin().then(() => {
+      navigate('/forum');
+    });
   };
 
   return (
@@ -25,7 +28,7 @@ export function LoginPage() {
         <form onSubmit={handleSubmit} className="space-y-4 flex gap-4 flex-col">
           <TextField
             label="Email"
-            type="email"
+            //type="email"
             fullWidth
             value={login}
             onChange={handleLogin}
@@ -38,9 +41,9 @@ export function LoginPage() {
             onChange={handlePassword}
           />
 
-          <button type="submit" className="btn btn-primary w-full mt-2">
+          <Button type="submit" className="bg-primary text-text w-full mt-2">
             Entrar
-          </button>
+          </Button>
         </form>
 
         <div className="text-sm text-center text-base-content/60">
