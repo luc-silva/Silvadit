@@ -22,23 +22,26 @@
   --color-border: #e5e7eb;
   --color-primary: #2563eb;
   --color-secondary: #10b981;
-
-
+  
+  --color-success-primary: #36b37e;
   --color-success-bg: #36b37e;
   --color-success-title: var(--color-title);
   --color-success-text: #e7f8f0;
   --color-success-subtitle: #d4f3e6;
 
+  --color-warning-primary: #ffab00;
   --color-warning-bg: #FFAB00;
   --color-warning-title: var(--color-title);
   --color-warning-text: #FFF5DA;
   --color-warning-subtitle: #FFF0C1;
 
+  --color-danger-primary: #ff5630;
   --color-danger-bg: #FF5630;
   --color-danger-title: var(--color-title);
   --color-danger-text: #FFEAE5;
   --color-danger-subtitle: #FFD7D1;
 
+  --color-info-primary: #00b8d9;
   --color-info-bg: #00B8D9;
   --color-info-title: var(--color-title);
   --color-info-text: #FFFFFF;
@@ -55,21 +58,25 @@
   --color-primary: #2563eb;
   --color-secondary: #10b981;
 
+  --color-success-primary: #36b37e;
   --color-success-bg: #36b37e;
   --color-success-title: #ffffff;
   --color-success-text: #e7f8f0;
   --color-success-subtitle: #d4f3e6;
-
+  
+  --color-warning-primary: #ffab00;
   --color-warning-bg: #ffab00;
   --color-warning-title: #ffffff;
   --color-warning-text: #fff5da;
   --color-warning-subtitle: #fff0c1;
 
+  --color-danger-primary: #ff5630;
   --color-danger-bg: #ff5630;
   --color-danger-title: #ffffff;
   --color-danger-text: #ffeae5;
   --color-danger-subtitle: #ffd7d1;
-
+  
+  --color-info-primary: #00b8d9;
   --color-info-bg: #00b8d9;
   --color-info-title: #ffffff;
   --color-info-text: #e0f9fd;
@@ -86,21 +93,25 @@
   --color-primary: #60a5fa;
   --color-secondary: #34d399;
 
+  --color-success-primary: #36b37e;
   --color-success-bg: #1e3d32;
   --color-success-title: #ffffff;
   --color-success-text: #b4f0d2;
   --color-success-subtitle: #8de2b7;
 
+  --color-warning-primary: #ffab00;
   --color-warning-bg: #3e2b00;
   --color-warning-title: #ffffff;
   --color-warning-text: #ffe9b5;
   --color-warning-subtitle: #ffd666;
-
+  
+  --color-danger-primary: #ff5630;
   --color-danger-bg: #3b1c17;
   --color-danger-title: #ffffff;
   --color-danger-text: #ffc9c1;
   --color-danger-subtitle: #ffa299;
 
+  --color-info-primary: #00b8d9;
   --color-info-bg: #0c3a47;
   --color-info-title: #ffffff;
   --color-info-text: #b5edf8;
