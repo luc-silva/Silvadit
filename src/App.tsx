@@ -33,7 +33,7 @@ function App() {
             <Route element={<PostPage />} path="/post/:id" />
             <Route path="forum" element={<ForumPage />}>
               <Route path=":id" element={<ForumPageMain />} />
-              <Route path=":id/create" element={<ForumCreatePage />} />
+              <Route path="create" element={<ForumCreatePage />} />
               <Route path=":id/edit" element={<ForumEditPage />} />
             </Route>
           </Routes>
