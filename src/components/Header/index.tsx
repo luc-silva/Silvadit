@@ -5,6 +5,7 @@ import {
   Gear,
   SignOut,
   User,
+  Plus,
 } from '@phosphor-icons/react';
 import { useMemo, useState, useRef, useEffect } from 'react';
 
@@ -18,7 +19,6 @@ export const Header = () => {
     return excludedPaths.includes(location.pathname);
   }, [location]);
 
-  // Fecha o menu ao clicar fora
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (menuRef.current && !(menuRef.current as any).contains(event.target)) {
@@ -32,27 +32,28 @@ export const Header = () => {
   if (disableHeader) return null;
 
   return (
-    <header className="bg-surface text-text border-b border-border px-4 py-3 sticky top-0 z-50">
-      <div className="max-w-7xl mx-auto flex items-center justify-between gap-4">
-        <div className="flex items-center gap-3 select-none">
-          <div className="w-8 h-8 rounded-md bg-primary text-white font-bold flex items-center justify-center text-base shadow-sm">
+    <header className="bg-surface border-b border-border px-6 py-4 sticky top-0 z-50 shadow-sm">
+      <div className="max-w-7xl mx-auto flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <div className="w-9 h-9 rounded-full bg-primary text-white font-bold flex items-center justify-center text-base shadow">
             S
           </div>
-          <span className="text-xl font-semibold text-text tracking-tight leading-none">
+          <span className="text-xl font-semibold text-subtitle tracking-tight">
             Silva<span className="text-primary">Dit</span>
           </span>
         </div>
 
-        <div className="flex-1 max-w-md mx-4">
-          <div className="flex items-center border border-border bg-bg rounded-md overflow-hidden shadow-sm focus-within:ring-1 focus-within:ring-primary transition">
+        <div className="flex-1 mx-6 max-w-lg text-text border border-border  rounded-full">
+          <div className="relative">
             <input
               type="text"
               placeholder="Buscar threads..."
-              className="w-full px-4 py-2 bg-surface text-sm outline-none"
+              className="w-full px-4 py-2 pr-10  rounded-full bg-bg text-sm focus:outline-none focus:ring-2 focus:ring-primary transition"
             />
-            <button className="px-3 hover:text-text transition">
-              <MagnifyingGlass size={20} />
-            </button>
+            <MagnifyingGlass
+              size={20}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-text"
+            />
           </div>
         </div>
 
@@ -73,14 +74,24 @@ export const Header = () => {
           </button>
 
           {isMenuOpen && (
-            <div className="absolute right-0 top-12 mt-2 w-48 bg-bg border border-border shadow-lg rounded-md py-2 z-50 text-sm">
+            <div className="absolute right-0 top-12 mt-2 w-52 bg-surface border border-border shadow-md rounded-lg  z-50 text-sm">
+              <div className="px-2 pb-2 mt-2">
+                <button
+                  className="flex items-center justify-center gap-2 w-full px-3 py-2 bg-primary text-surface rounded-md text-sm hover:bg-primary/90 transition"
+                  onClick={() => {
+                    setIsMenuOpen(false);
+                    console.log('Criar fórum clicado');
+                  }}
+                >
+                  <Plus size={16} />
+                  Criar fórum
+                </button>
+              </div>
+
               <MenuItem icon={<User size={16} />} label="Perfil" />
-              <MenuItem
-                icon={<ChatTeardropDots size={16} />}
-                label="Mensagens"
-              />
+              <MenuItem icon={<ChatTeardropDots size={16} />} label="Mensagens" />
               <MenuItem icon={<Gear size={16} />} label="Configurações" />
-              <div className="border-t border-border my-2" />
+              <div className="border-t border-border" />
               <MenuItem icon={<SignOut size={16} />} label="Sair" danger />
             </div>
           )}
@@ -101,8 +112,8 @@ function MenuItem({
 }) {
   return (
     <button
-      className={`flex items-center gap-2 px-4 py-2 w-full text-left hover:bg-border/10 transition ${
-        danger ? 'text-red-500 hover:text-red-600' : 'text-text'
+      className={`flex items-center gap-2 px-4 py-2 w-full text-left hover:bg-bg transition ${
+        danger ? 'text-danger-primary hover:bg-danger-primary/20' : 'text-text'
       }`}
     >
       {icon}
