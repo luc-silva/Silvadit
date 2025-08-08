@@ -66,9 +66,9 @@ export const CommentSection = ({ postId }: { postId: string }) => {
   return (
     <div className="mt-4 space-y-4">
       <div className="flex items-center justify-between text-sm">
-        <span className="text-base-muted">Comentários</span>
+        <span className="text-subtitle">Comentários</span>
         <select
-          className="text-sm bg-base-bg border border-base-border rounded px-2 py-1"
+          className="text-sm bg-bg border border-border rounded px-2 py-1"
           value={sortBy}
           onChange={handleSort}
         >
@@ -87,12 +87,12 @@ export const CommentSection = ({ postId }: { postId: string }) => {
       </div>
 
       <textarea
-        className="w-full text-sm bg-base-bg border border-base-border rounded px-3 py-2"
+        className="w-full text-sm bg-bg border border-border rounded px-3 py-2"
         placeholder="Escreva um comentário..."
         rows={2}
       />
       <div className="flex justify-end mt-2">
-        <button className="bg-base-primary text-white text-sm px-3 py-1 rounded hover:brightness-105">
+        <button className="bg-primary text-white text-sm px-3 py-1 rounded hover:brightness-105 cursor-pointer">
           Comentar
         </button>
       </div>

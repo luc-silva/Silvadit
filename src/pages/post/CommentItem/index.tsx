@@ -48,18 +48,18 @@ export const CommentItem = ({ comment }: { comment: ICommentary }) => {
   return (
     <div
       id={`comment-${comment.id}`}
-      className="border-l-2 border-base-border pl-4 pt-1 pb-1 scroll-mt-16"
+      className="border-l-2 border-border pl-4 pt-1 pb-1 scroll-mt-16"
       onMouseEnter={onMouse}
       onMouseLeave={onMouse}
     >
       <div className="text-sm flex gap-1 items-center">
-        <span className="font-medium text-base-primary">@{comment.author}</span>
+        <span className="font-medium text-primary cursor-pointer">@{comment.author}</span>
         {editing ? (
           <textarea
             value={editedText}
             onChange={(e) => setEditedText(e.target.value)}
             rows={2}
-            className="w-full mt-1 text-sm border border-base-border rounded bg-base-bg px-3 py-1"
+            className="w-full mt-1 text-sm border border-border rounded bg-bg px-3 py-1"
           />
         ) : (
           <span className="text-xs">{getRelativeTime(comment.createdAt)}</span>
@@ -70,14 +70,14 @@ export const CommentItem = ({ comment }: { comment: ICommentary }) => {
 
       <div className="flex justify-between gap-4 text-xs text-base-muted mt-2">
         <div className="flex gap-3">
-          <div className="flex items-center gap-1">
+          <div className="flex items-center gap-1 hover:text-primary cursor-pointer">
             <ThumbsUp size={14} />
             <span>{comment.likes}</span>
           </div>
 
           <button
             onClick={() => setShowReplyBox(!showReplyBox)}
-            className="hover:text-base-primary"
+            className="hover:text-primary cursor-pointer"
           >
             Responder
           </button>
@@ -85,7 +85,7 @@ export const CommentItem = ({ comment }: { comment: ICommentary }) => {
           {comment.replies && comment.replies.length > 0 && (
             <button
               onClick={() => setShowReplies((s) => !s)}
-              className="hover:text-base-primary "
+              className="hover:text-primary cursor-pointer"
             >
               {showReplies
                 ? 'Ocultar respostas'
@@ -98,7 +98,7 @@ export const CommentItem = ({ comment }: { comment: ICommentary }) => {
           <div className="flex gap-3">
             <button
               onClick={handleCopyLink}
-              className="hover:text-base-primary flex gap-1"
+              className="hover:text-primary flex gap-1 cursor-pointer"
             >
               <LinkSimpleHorizontal size={14} /> Copiar link
             </button>
@@ -107,16 +107,16 @@ export const CommentItem = ({ comment }: { comment: ICommentary }) => {
               <>
                 <button
                   onClick={() => setEditing((e) => !e)}
-                  className="hover:text-base-primary flex gap-1"
+                  className="hover:text-primary flex gap-1 cursor-pointer"
                 >
                   <PencilSimple size={14} /> Editar
                 </button>
-                <button className="hover:text-red-500 flex gap-1">
+                <button className="hover:text-danger-primary flex gap-1 cursor-pointer">
                   <Trash size={14} /> Deletar
                 </button>
               </>
             ) : (
-              <button className="hover:text-yellow-600 flex gap-1">
+              <button className="hover:text-danger-primary flex gap-1 cursor-pointer">
                 <Flag size={14} /> Reportar
               </button>
             )}
@@ -129,10 +129,10 @@ export const CommentItem = ({ comment }: { comment: ICommentary }) => {
           <textarea
             placeholder="Responder comentário..."
             rows={2}
-            className="w-full text-sm border border-base-border rounded bg-base-bg px-3 py-2"
+            className="w-full text-sm border border-border rounded bg-bg px-3 py-2"
           />
           <div className="flex justify-end">
-            <button className="bg-base-primary text-white text-xs px-3 py-1 rounded hover:brightness-105">
+            <button className="bg-primary text-white text-xs px-3 py-1 rounded hover:brightness-105 cursor-pointer">
               Enviar resposta
             </button>
           </div>

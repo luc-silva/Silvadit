@@ -46,9 +46,9 @@ export const PostPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-base-bg text-base-text px-4 py-6">
+    <div className="min-h-screen bg-bg text-text px-4 py-6">
       <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-[1fr_300px] gap-6">
-        <main className="bg-base-surface border border-base-border rounded p-6 shadow-sm space-y-4 h-fit">
+        <main className="bg-surface border border-border rounded p-6 shadow-sm space-y-4 h-fit">
           <img
             src="/banner-exemplo.jpg"
             alt="Imagem do post"
@@ -58,31 +58,31 @@ export const PostPage = () => {
           {isEditing ? (
             <div className="space-y-3">
               <input
-                className="w-full text-lg font-semibold bg-base-bg border border-base-border rounded px-3 py-2"
+                className="w-full text-lg font-semibold bg-bg border border-border rounded px-3 py-2"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
               />
               <input
-                className="w-full text-sm bg-base-bg border border-base-border rounded px-3 py-2"
+                className="w-full text-sm bg-bg border border-border rounded px-3 py-2"
                 value={hashtag}
                 onChange={(e) => setHashtag(e.target.value)}
               />
               <textarea
-                className="w-full text-sm bg-base-bg border border-base-border rounded px-3 py-2"
+                className="w-full text-sm bg-bg border border-border rounded px-3 py-2"
                 rows={5}
                 value={content}
                 onChange={(e) => setContent(e.target.value)}
               />
               <div className="flex gap-2 justify-end">
                 <button
-                  className="px-4 py-2 text-sm rounded bg-base-muted text-base-text"
+                  className="px-4 py-2 text-sm rounded text-base-text"
                   onClick={() => setIsEditing(false)}
                   disabled={loading}
                 >
                   Cancelar
                 </button>
                 <button
-                  className="px-4 py-2 text-sm rounded bg-base-primary text-white hover:brightness-105 transition"
+                  className="px-4 py-2 text-sm rounded bg-bg text-text hover:brightness-105 transition"
                   onClick={handleSave}
                   disabled={loading}
                 >
@@ -93,20 +93,20 @@ export const PostPage = () => {
           ) : (
             <>
               <h1 className="text-xl font-semibold">{title}</h1>
-              <p className="text-sm text-base-primary">{hashtag}</p>
+              <p className="text-sm text-text">{hashtag}</p>
               <p className="text-sm leading-relaxed">{content}</p>
             </>
           )}
 
           {isOwner && !isEditing && (
-            <div className="flex gap-4 text-sm text-base-muted border-t border-base-border pt-4">
+            <div className="flex gap-4 text-sm text-text border-t border-border pt-4">
               <button
                 onClick={() => setIsEditing(true)}
-                className="flex items-center gap-1 hover:text-base-primary"
+                className="flex items-center gap-1 hover:text-primary cursor-pointer"
               >
                 <PencilSimple size={16} /> Editar
               </button>
-              <button className="flex items-center gap-1 hover:text-red-500">
+              <button className="flex items-center gap-1 hover:text-danger-primary cursor-pointer">
                 <Trash size={16} /> Excluir
               </button>
             </div>
