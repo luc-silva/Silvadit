@@ -1,9 +1,12 @@
-import { useToast } from "../useToast";
+import { useState } from 'react';
+import { useToast } from '../useToast';
 
 export const useApp = () => {
-    const features = {
-        ...useToast(),
-    };
+  const [session, setSession] = useState<ISession | null>(null);
 
-    return features;
+  return {
+    ...useToast(),
+    session,
+    setSession,
+  };
 };
