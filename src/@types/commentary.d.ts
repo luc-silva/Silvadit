@@ -1,9 +1,21 @@
 interface ICommentary {
-  author: string;
+  id: string;
+  post: {
+    id: string;
+    title: string;
+  };
+  user: { id: string; username: string } | null;
   content: string;
-  createdAt: Date;
-  id: number;
+  replyId?: string;
+  dateCreated: Date;
+  dateEdited: Date | null;
   likes: number;
   replies: ICommentary[];
-  replies_total: number;
+  repliesTotal: number;
+}
+
+interface ISubmitCommentary {
+  content: string;
+  postId: string;
+  replyId?: string;
 }

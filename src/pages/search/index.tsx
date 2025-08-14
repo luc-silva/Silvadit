@@ -1,57 +1,38 @@
 import { useState } from 'react';
 import {
-  User,
-  ChatTeardropText,
-  UsersThree,
-  MagnifyingGlass,
-  Calendar,
+  MagnifyingGlassIcon,
+  ChatTeardropTextIcon,
+  UserIcon,
+  UsersThreeIcon,
 } from '@phosphor-icons/react';
+import { ITabItem, Tabs } from '~/components/TabOptions';
 
 export const SearchPage = () => {
   const [activeTab, setActiveTab] = useState('all');
 
+  const tabsConst: ITabItem[] = [
+    { text: 'Todos', value: 'all', icon: <MagnifyingGlassIcon size={16} /> },
+    { text: 'Fóruns', value: 'forum', icon: <UsersThreeIcon size={16} /> },
+    { text: 'Usuários', value: 'user', icon: <UserIcon size={16} /> },
+    {
+      text: 'Postagens',
+      value: 'post',
+      icon: <ChatTeardropTextIcon size={16} />,
+    },
+  ];
+
   return (
-    <div className="min-h-screen bg-base-bg text-base-text px-4 py-6">
+    <div className="min-h-screen bg-bg text-text px-4 py-6">
       <div className="max-w-7xl mx-auto flex flex-col lg:flex-row gap-8">
         <SidebarFilters activeTab={activeTab} />
 
-        {/* Conteúdo Principal */}
         <section className="flex-1 space-y-6">
-          {/* Abas */}
-          <div className="flex items-center gap-2 border-b border-base-border overflow-x-auto">
-            <TabItem
-              label="Todos"
-              value="all"
-              icon={<MagnifyingGlass size={16} />}
-              activeTab={activeTab}
-              onClick={setActiveTab}
-            />
-            <TabItem
-              label="Fóruns"
-              value="forum"
-              icon={<UsersThree size={16} />}
-              activeTab={activeTab}
-              onClick={setActiveTab}
-            />
-            <TabItem
-              label="Usuários"
-              value="user"
-              icon={<User size={16} />}
-              activeTab={activeTab}
-              onClick={setActiveTab}
-            />
-            <TabItem
-              label="Postagens"
-              value="post"
-              icon={<ChatTeardropText size={16} />}
-              activeTab={activeTab}
-              onClick={setActiveTab}
-            />
-          </div>
-
-          {/* Resultados */}
+          <Tabs
+            activeTab={activeTab}
+            onClickTab={setActiveTab}
+            tabs={tabsConst}
+          />
           <div className="grid gap-4">
-            {/* Cards de resultados baseados em `activeTab` */}
             <SearchResultCard
               title="Exemplo de resultado"
               subtitle="Descrição ou contexto do item"
@@ -67,37 +48,6 @@ export const SearchPage = () => {
   );
 };
 
-// Componente de Aba
-const TabItem = ({
-  label,
-  value,
-  icon,
-  activeTab,
-  onClick,
-}: {
-  label: string;
-  value: string;
-  icon: React.ReactNode;
-  activeTab: string;
-  onClick: (val: string) => void;
-}) => {
-  const active = value === activeTab;
-  return (
-    <button
-      onClick={() => onClick(value)}
-      className={`flex items-center gap-2 px-4 py-2 text-sm border-b-2 transition ${
-        active
-          ? 'border-base-primary text-base-text font-medium'
-          : 'border-transparent text-base-muted hover:text-base-text'
-      }`}
-    >
-      {icon}
-      {label}
-    </button>
-  );
-};
-
-// Card de Resultado (genérico)
 const SearchResultCard = ({
   title,
   subtitle,
@@ -106,15 +56,14 @@ const SearchResultCard = ({
   subtitle?: string;
 }) => {
   return (
-    <div className="p-4 rounded border border-base-border bg-base-surface shadow-sm hover:shadow transition">
-      <h3 className="text-base font-semibold">{title}</h3>
-      {subtitle && <p className="text-sm text-base-muted mt-1">{subtitle}</p>}
+    <div className="p-4 rounded border border-border bg-surface shadow-sm hover:shadow transition">
+      <h3 className="text-font-semibold">{title}</h3>
+      {subtitle && <p className="text-sm text-text mt-1">{subtitle}</p>}
     </div>
   );
 };
 
 export const SidebarFilters = ({ activeTab }: { activeTab: string }) => {
-  // estados internos para controlar filtros (só para demo)
   const [dateFrom, setDateFrom] = useState('');
   const [dateTo, setDateTo] = useState('');
   const [tipo, setTipo] = useState('');
@@ -125,34 +74,32 @@ export const SidebarFilters = ({ activeTab }: { activeTab: string }) => {
   const [ordenarPor, setOrdenarPor] = useState('relevancia');
 
   return (
-    <aside className="w-full lg:w-64 border border-base-border bg-base-surface rounded p-4 space-y-6">
-      <h2 className="text-sm font-medium uppercase tracking-wide text-base-muted">
+    <aside className="w-full lg:w-64 border border-border bg-surface rounded p-4 space-y-6">
+      <h2 className="text-sm font-medium uppercase tracking-wide text-text">
         Filtros
       </h2>
 
-      {/* Intervalo de datas */}
       <div className="space-y-2">
         <label className="text-sm font-medium">Data (de)</label>
         <input
           type="date"
-          className="w-full px-3 py-2 rounded border border-base-border bg-base-bg text-sm"
+          className="w-full px-3 py-2 rounded border border-border bg-bg text-sm"
           value={dateFrom}
           onChange={(e) => setDateFrom(e.target.value)}
         />
         <label className="text-sm font-medium">Data (até)</label>
         <input
           type="date"
-          className="w-full px-3 py-2 rounded border border-base-border bg-base-bg text-sm"
+          className="w-full px-3 py-2 rounded border border-border bg-bg text-sm"
           value={dateTo}
           onChange={(e) => setDateTo(e.target.value)}
         />
       </div>
 
-      {/* Tipo (Geral) */}
       <div className="space-y-2">
         <label className="text-sm font-medium">Tipo</label>
         <select
-          className="w-full px-3 py-2 rounded border border-base-border bg-base-bg text-sm"
+          className="w-full px-3 py-2 rounded border border-border bg-bg text-sm"
           value={tipo}
           onChange={(e) => setTipo(e.target.value)}
           disabled={activeTab !== 'all'}
@@ -164,28 +111,26 @@ export const SidebarFilters = ({ activeTab }: { activeTab: string }) => {
         </select>
       </div>
 
-      {/* Dono da Postagem (apenas aba fórum) */}
       {activeTab === 'forum' && (
         <div className="space-y-2">
           <label className="text-sm font-medium">Dono da Postagem</label>
           <input
             type="text"
             placeholder="Nome de usuário"
-            className="w-full px-3 py-2 rounded border border-base-border bg-base-bg text-sm"
+            className="w-full px-3 py-2 rounded border border-border bg-bg text-sm"
             value={donoPost}
             onChange={(e) => setDonoPost(e.target.value)}
           />
         </div>
       )}
 
-      {/* Somente Fóruns Seguidos */}
       <div className="flex items-center gap-2">
         <input
           type="checkbox"
           id="filtros-seguidos"
           checked={somenteSeguidos}
           onChange={() => setSomenteSeguidos((v) => !v)}
-          className="w-4 h-4 text-base-primary border-base-border rounded"
+          className="w-4 h-4 text-primary border-border rounded"
         />
         <label
           htmlFor="filtros-seguidos"
@@ -195,14 +140,13 @@ export const SidebarFilters = ({ activeTab }: { activeTab: string }) => {
         </label>
       </div>
 
-      {/* Mostrar NSFW */}
       <div className="flex items-center gap-2">
         <input
           type="checkbox"
           id="filtros-nsfw"
           checked={mostrarNSFW}
           onChange={() => setMostrarNSFW((v) => !v)}
-          className="w-4 h-4 text-base-primary border-base-border rounded"
+          className="w-4 h-4 text-primary border-border rounded"
         />
         <label
           htmlFor="filtros-nsfw"
@@ -212,11 +156,10 @@ export const SidebarFilters = ({ activeTab }: { activeTab: string }) => {
         </label>
       </div>
 
-      {/* Tipo de conteúdo */}
       <div className="space-y-2">
         <label className="text-sm font-medium">Tipo de conteúdo</label>
         <select
-          className="w-full px-3 py-2 rounded border border-base-border bg-base-bg text-sm"
+          className="w-full px-3 py-2 rounded border border-border bg-bg text-sm"
           value={conteudoTipo}
           onChange={(e) => setConteudoTipo(e.target.value)}
         >
@@ -227,11 +170,10 @@ export const SidebarFilters = ({ activeTab }: { activeTab: string }) => {
         </select>
       </div>
 
-      {/* Ordenar por */}
       <div className="space-y-2">
         <label className="text-sm font-medium">Ordenar por</label>
         <select
-          className="w-full px-3 py-2 rounded border border-base-border bg-base-bg text-sm"
+          className="w-full px-3 py-2 rounded border border-border bg-bg text-sm"
           value={ordenarPor}
           onChange={(e) => setOrdenarPor(e.target.value)}
         >

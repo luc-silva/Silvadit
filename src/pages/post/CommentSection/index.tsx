@@ -1,56 +1,24 @@
-import { ChangeEvent, useEffect, useState } from 'react';
+import { ChangeEvent, useEffect, useMemo, useState } from 'react';
 import { CommentItem } from '../CommentItem';
 import { Loading } from '~/components/Loading';
+import { useCommentarySection } from '../hooks/useCommentarySection';
 
 enum SortOptions {
   LIKES = 'likes',
   RECENT = 'recent',
 }
 
-const commentaryMock: ICommentary[] = [
-  {
-    author: 'luan_dev',
-    content: 'Muito bom esse post!',
-    createdAt: new Date(),
-    id: 123,
-    likes: 32,
-    replies: [
-      {
-        author: 'joana_js',
-        content: 'Totalmente de acordo.',
-        createdAt: new Date(),
-        id: 312,
-        likes: 23,
-        replies: [
-          {
-            author: 'jorge',
-            content: 'Nem tanto',
-            createdAt: new Date(),
-            id: 312,
-            likes: 23,
-            replies: [],
-            replies_total: 0,
-          },
-        ],
-        replies_total: 1,
-      },
-      {
-        author: 'lucas_node',
-        content: 'Explica mais sobre isso?',
-        createdAt: new Date(),
-        id: 312,
-        likes: 23,
-        replies: [],
-        replies_total: 0,
-      },
-    ],
-    replies_total: 2,
-  },
-];
-
 export const CommentSection = ({ postId }: { postId: string }) => {
+  const {
+    content,
+    handleContent,
+    isSubmitLoading,
+    loadSubmitPostCommentary,
+    loadCommentaries,
+    commentaries,
+  } = useCommentarySection();
+
   const [sortBy, setSortBy] = useState<SortOptions>(SortOptions.LIKES);
-  const isLoading = false;
 
   const handleSort = (event: ChangeEvent<HTMLSelectElement>) => {
     const { target } = event;
@@ -58,12 +26,15 @@ export const CommentSection = ({ postId }: { postId: string }) => {
     setSortBy(target.value as SortOptions);
   };
 
-  // ao pegar link do comentario, abrir página do post, porem tendo apenas o comentario em questao.
-  // ter botão para carregar toidos os cometarios
+  const handleSubmit = async () => {
+    await loadSubmitPostCommentary(postId);
+  };
 
   useEffect(() => {
-    // chamar dados
+    loadCommentaries(postId);
   }, [postId]);
+
+  const isLoading = useMemo(() => isSubmitLoading, [isSubmitLoading]);
 
   if (isLoading) return <Loading />;
   return (
@@ -81,10 +52,7 @@ export const CommentSection = ({ postId }: { postId: string }) => {
       </div>
 
       <div className="flex flex-col gap-3">
-        {commentaryMock.map((data) => (
-          <CommentItem comment={data} key={data.id} />
-        ))}
-        {commentaryMock.map((data) => (
+        {commentaries.map((data) => (
           <CommentItem comment={data} key={data.id} />
         ))}
       </div>
@@ -93,9 +61,14 @@ export const CommentSection = ({ postId }: { postId: string }) => {
         className="w-full text-sm bg-bg border border-border rounded px-3 py-2"
         placeholder="Escreva um comentário..."
         rows={2}
+        onChange={handleContent}
+        value={content}
       />
       <div className="flex justify-end mt-2">
-        <button className="bg-primary text-white text-sm px-3 py-1 rounded hover:brightness-105 cursor-pointer">
+        <button
+          className="bg-primary text-white text-sm px-3 py-1 rounded hover:brightness-105 cursor-pointer"
+          onClick={handleSubmit}
+        >
           Comentar
         </button>
       </div>

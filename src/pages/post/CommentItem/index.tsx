@@ -1,13 +1,15 @@
 import { useEffect, useState } from 'react';
 import {
-  PencilSimple,
-  Trash,
-  ThumbsUp,
-  LinkSimpleHorizontal,
-  Flag,
+  PencilSimpleIcon,
+  TrashIcon,
+  ThumbsUpIcon,
+  LinkSimpleHorizontalIcon,
+  FlagIcon,
 } from '@phosphor-icons/react';
 import { Link } from 'react-router-dom';
 import { Loading } from '~/components/Loading';
+import { useCommentarySection } from '../hooks/useCommentarySection';
+import { useAppFeatures } from '~/context/appWrapper';
 
 const getRelativeTime = (date: Date) => {
   const now = new Date();
@@ -22,26 +24,32 @@ const getRelativeTime = (date: Date) => {
 export const CommentItem = ({ comment }: { comment: ICommentary }) => {
   const [showReplies, setShowReplies] = useState(false);
   const [showReplyBox, setShowReplyBox] = useState(false);
-  const [replies, setReplies] = useState<ICommentary[]>([]);
 
   const [editing, setEditing] = useState(false);
   const [editedText, setEditedText] = useState(comment.content);
+  const { session } = useAppFeatures();
+
+  const {
+    content,
+    handleContent,
+    loadSubmitPostCommentary,
+    loadReplies,
+    isRepliesLoading,
+    replies,
+  } = useCommentarySection();
 
   const handleCopyLink = () => {
     const link = `${window.location.href.split('#')[0]}#comment-${comment.id}`;
     navigator.clipboard.writeText(link);
   };
 
-  const isOwner = false;
-
-  const [isReplyLoading, setIsReplyLoading] = useState(true);
+  const isOwner = comment.user?.id === session?.id;
 
   useEffect(() => {
-    //carregar dados
-    setIsReplyLoading(true);
-    setReplies(comment.replies);
-    setIsReplyLoading(false);
-  }, [showReplies, replies]);
+    if (showReplies) {
+      loadReplies(comment.id);
+    }
+  }, [showReplies]);
 
   const [showMiscButtons, setShowMiscButtons] = useState(false);
 
@@ -49,7 +57,12 @@ export const CommentItem = ({ comment }: { comment: ICommentary }) => {
     setShowMiscButtons(!showMiscButtons);
   };
 
-  if (isReplyLoading) return;
+  const handleReply = async () => {
+    await loadSubmitPostCommentary(comment.post.id, comment.id).then(() => {
+      setShowReplyBox(false);
+    });
+    await loadReplies(comment.id);
+  };
 
   return (
     <div
@@ -61,28 +74,30 @@ export const CommentItem = ({ comment }: { comment: ICommentary }) => {
       <div className="text-sm flex gap-1 items-center">
         <Link
           className="font-medium text-primary cursor-pointer"
-          to={`/user/${comment.author}`}
+          to={`/user/${comment.user?.id}`}
         >
-          @{comment.author}
+          @{comment.user?.username}
         </Link>
-        {editing ? (
-          <textarea
-            value={editedText}
-            onChange={(e) => setEditedText(e.target.value)}
-            rows={2}
-            className="w-full mt-1 text-sm border border-border rounded bg-bg px-3 py-1"
-          />
-        ) : (
-          <span className="text-xs">{getRelativeTime(comment.createdAt)}</span>
-        )}
-      </div>
 
-      <span>{comment.content}</span>
+        <span className="text-xs">
+          {getRelativeTime(new Date(comment.dateCreated))}
+        </span>
+      </div>
+      {editing ? (
+        <textarea
+          value={editedText}
+          onChange={(e) => setEditedText(e.target.value)}
+          rows={2}
+          className="w-full mt-1 text-sm border border-border rounded bg-bg px-3 py-1"
+        />
+      ) : (
+        <span>{comment.content}</span>
+      )}
 
       <div className="flex justify-between gap-4 text-xs text-base-muted mt-2">
         <div className="flex gap-3">
           <div className="flex items-center gap-1 hover:text-primary cursor-pointer">
-            <ThumbsUp size={14} />
+            <ThumbsUpIcon size={14} />
             <span>{comment.likes}</span>
           </div>
 
@@ -93,42 +108,55 @@ export const CommentItem = ({ comment }: { comment: ICommentary }) => {
             Responder
           </button>
 
-          {comment.replies && comment.replies.length > 0 && (
+          {comment.repliesTotal > 0 && (
             <button
               onClick={() => setShowReplies((s) => !s)}
               className="hover:text-primary cursor-pointer"
             >
               {showReplies
                 ? 'Ocultar respostas'
-                : `Ver respostas (${comment.replies.length})`}
+                : `Ver respostas (${comment.repliesTotal})`}
             </button>
           )}
         </div>
 
-        {showMiscButtons && (
-          <div className="flex gap-3">
-            <button
-              onClick={handleCopyLink}
-              className="hover:text-primary flex gap-1 cursor-pointer"
-            >
-              <LinkSimpleHorizontal size={14} /> Copiar link
-            </button>
-
+        {true && (
+          <div className="flex gap-3 items-center">
             {isOwner ? (
               <>
-                <button
-                  onClick={() => setEditing((e) => !e)}
-                  className="hover:text-primary flex gap-1 cursor-pointer"
-                >
-                  <PencilSimple size={14} /> Editar
-                </button>
-                <button className="hover:text-danger-primary flex gap-1 cursor-pointer">
-                  <Trash size={14} /> Deletar
-                </button>
+                {editing && (
+                  <>
+                    <button
+                      onClick={() => setEditing((e) => !e)}
+                      className="text-white bg-primary flex gap-1 cursor-pointer text-xs px-3 py-1 rounded "
+                    >
+                      <PencilSimpleIcon size={14} /> Confirmar Edição
+                    </button>
+                    <button
+                      onClick={() => setEditing((e) => !e)}
+                      className="hover:text-primary flex gap-1 cursor-pointer"
+                    >
+                      <PencilSimpleIcon size={14} /> Editar
+                    </button>
+                  </>
+                )}
+                {!editing && (
+                  <>
+                    <button
+                      onClick={handleCopyLink}
+                      className="hover:text-primary flex gap-1 cursor-pointer"
+                    >
+                      <LinkSimpleHorizontalIcon size={14} /> Copiar link
+                    </button>
+                    <button className="hover:text-danger-primary flex gap-1 cursor-pointer">
+                      <TrashIcon size={14} /> Deletar
+                    </button>
+                  </>
+                )}
               </>
             ) : (
               <button className="hover:text-danger-primary flex gap-1 cursor-pointer">
-                <Flag size={14} /> Reportar
+                <FlagIcon size={14} /> Reportar
               </button>
             )}
           </div>
@@ -141,19 +169,24 @@ export const CommentItem = ({ comment }: { comment: ICommentary }) => {
             placeholder="Responder comentário..."
             rows={2}
             className="w-full text-sm border border-border rounded bg-bg px-3 py-2"
+            value={content}
+            onChange={handleContent}
           />
           <div className="flex justify-end">
-            <button className="bg-primary text-white text-xs px-3 py-1 rounded hover:brightness-105 cursor-pointer">
+            <button
+              className="bg-primary text-white text-xs px-3 py-1 rounded hover:brightness-105 cursor-pointer"
+              onClick={handleReply}
+            >
               Enviar resposta
             </button>
           </div>
         </div>
       )}
 
-      {showReplies && !!comment.replies_total && (
+      {showReplies && !!comment.repliesTotal && (
         <>
-          {isReplyLoading && <Loading size="small" />}
-          {!isReplyLoading &&
+          {isRepliesLoading && <Loading size="small" />}
+          {!isRepliesLoading &&
             replies.map((reply) => (
               <CommentItem comment={reply} key={reply.id} />
             ))}

@@ -4,14 +4,13 @@ import {
   PencilSimpleIcon,
   ThumbsUpIcon,
 } from '@phosphor-icons/react';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { CommentSection } from '~/pages/post/CommentSection';
 
 export const PostCard = ({ data }: { data: IFeed }) => {
   const [showComments, setShowComments] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
-  const [contentHeight, setContentHeight] = useState<string>('fit-content');
 
   const {
     content,
@@ -23,7 +22,7 @@ export const PostCard = ({ data }: { data: IFeed }) => {
     postId,
     title,
   } = data;
-  
+
   const image = '';
   const hashtag: string[] = [];
 
@@ -112,8 +111,7 @@ export const PostCard = ({ data }: { data: IFeed }) => {
         </button>
       </div>
 
-      {/* Comentários */}
-      {showComments && <CommentSection postId="123" />}
+      {showComments && <CommentSection postId={data.postId} />}
     </div>
   );
 };
