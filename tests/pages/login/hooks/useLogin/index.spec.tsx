@@ -3,6 +3,14 @@ import { useLoginPage } from '~/pages/login/hooks';
 
 type IChangeEvent = React.ChangeEvent<HTMLInputElement>;
 
+jest.mock('~/service/api', () => ({
+  api: {
+    post: jest.fn(),
+    get: jest.fn(),
+    put: jest.fn()
+  },
+}));
+
 describe('useLoginPage hook', () => {
   it('It should change fields correctly', () => {
     const { result } = renderHook(useLoginPage);
