@@ -1,13 +1,15 @@
 import { useLocation } from 'react-router-dom';
 import {
-  MagnifyingGlass,
-  ChatTeardropDots,
-  Gear,
-  SignOut,
-  User,
-  Plus,
+  GearIcon,
+  SignOutIcon,
+  UserIcon,
+  PlusIcon,
+  SunIcon,
+  MagnifyingGlassIcon,
+  ChatTeardropDotsIcon,
 } from '@phosphor-icons/react';
 import { useMemo, useState, useRef, useEffect } from 'react';
+import { Avatar } from '@mui/material';
 
 export const Header = () => {
   const location = useLocation();
@@ -18,6 +20,17 @@ export const Header = () => {
     const excludedPaths = ['/', '/login', '/register'];
     return excludedPaths.includes(location.pathname);
   }, [location]);
+
+  const changeTheme = () => {
+    const body = document.getElementById('app-body');
+    console.log(body);
+    if (body) {
+      const isDark = body.classList.contains('dark');
+
+      if (isDark) body.classList.replace('dark', 'light');
+      if (!isDark) body.classList.replace('light', 'dark');
+    }
+  };
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -50,7 +63,7 @@ export const Header = () => {
               placeholder="Buscar threads..."
               className="w-full px-4 py-2 pr-10  rounded-full bg-bg text-sm focus:outline-none focus:ring-2 focus:ring-primary transition"
             />
-            <MagnifyingGlass
+            <MagnifyingGlassIcon
               size={20}
               className="absolute right-3 top-1/2 -translate-y-1/2 text-text"
             />
@@ -58,19 +71,35 @@ export const Header = () => {
         </div>
 
         <div className="flex items-center gap-4 relative" ref={menuRef}>
-          <button className="text-text hover:text-text transition">
-            <ChatTeardropDots size={20} />
+          <button className="text-text hover:text-subtitle transition">
+            <ChatTeardropDotsIcon size={20} />
+          </button>
+
+          <button
+            className="text-text hover:text-subtitle transition"
+            onClick={changeTheme}
+          >
+            <SunIcon size={20} />
           </button>
 
           <button
             onClick={() => setIsMenuOpen((prev) => !prev)}
             className="w-9 h-9 rounded-full overflow-hidden border border-border hover:ring-2 ring-primary transition"
           >
-            <img
-              src={'avatarPlaceholder'}
-              alt="avatar"
-              className="w-full h-full object-cover"
-            />
+            {true ? (
+              <Avatar
+                sx={{
+                  width: 'calc(var(--spacing) * 9)',
+                  height: 'calc(var(--spacing) * 9)',
+                }}
+              />
+            ) : (
+              <img
+                src={'avatarPlaceholder'}
+                alt="avatar"
+                className="w-full h-full object-cover"
+              />
+            )}
           </button>
 
           {isMenuOpen && (
@@ -83,16 +112,19 @@ export const Header = () => {
                     console.log('Criar fórum clicado');
                   }}
                 >
-                  <Plus size={16} />
+                  <PlusIcon size={16} />
                   Criar fórum
                 </button>
               </div>
 
-              <MenuItem icon={<User size={16} />} label="Perfil" />
-              <MenuItem icon={<ChatTeardropDots size={16} />} label="Mensagens" />
-              <MenuItem icon={<Gear size={16} />} label="Configurações" />
+              <MenuItem icon={<UserIcon size={16} />} label="Perfil" />
+              <MenuItem
+                icon={<ChatTeardropDotsIcon size={16} />}
+                label="Mensagens"
+              />
+              <MenuItem icon={<GearIcon size={16} />} label="Configurações" />
               <div className="border-t border-border" />
-              <MenuItem icon={<SignOut size={16} />} label="Sair" danger />
+              <MenuItem icon={<SignOutIcon size={16} />} label="Sair" danger />
             </div>
           )}
         </div>
