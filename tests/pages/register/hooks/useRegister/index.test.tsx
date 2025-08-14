@@ -3,6 +3,14 @@ import { useRegister } from '~/pages/register/hooks';
 
 type IChangeEvent = React.ChangeEvent<HTMLInputElement>;
 
+jest.mock('~/service/api', () => ({
+  api: {
+    post: jest.fn(),
+    get: jest.fn(),
+    put: jest.fn()
+  },
+}));
+
 describe('useRegister hook', () => {
   describe('Inputs', () => {
     it('Credentials - It should change fields correctly', () => {

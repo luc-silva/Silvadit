@@ -117,6 +117,7 @@ export const useRegister = () => {
       email,
       firstName,
       lastName,
+      confirmPassword,
       password,
       state,
       username,
