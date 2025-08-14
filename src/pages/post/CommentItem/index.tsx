@@ -6,6 +6,8 @@ import {
   LinkSimpleHorizontal,
   Flag,
 } from '@phosphor-icons/react';
+import { Link } from 'react-router-dom';
+import { Loading } from '~/components/Loading';
 
 const getRelativeTime = (date: Date) => {
   const now = new Date();
@@ -32,11 +34,13 @@ export const CommentItem = ({ comment }: { comment: ICommentary }) => {
 
   const isOwner = false;
 
-  const [replyLoading, setIsReplyLoading] = useState(false);
+  const [isReplyLoading, setIsReplyLoading] = useState(true);
 
   useEffect(() => {
     //carregar dados
+    setIsReplyLoading(true);
     setReplies(comment.replies);
+    setIsReplyLoading(false);
   }, [showReplies, replies]);
 
   const [showMiscButtons, setShowMiscButtons] = useState(false);
@@ -44,6 +48,8 @@ export const CommentItem = ({ comment }: { comment: ICommentary }) => {
   const onMouse = (_: React.MouseEvent<HTMLDivElement>) => {
     setShowMiscButtons(!showMiscButtons);
   };
+
+  if (isReplyLoading) return;
 
   return (
     <div
@@ -53,7 +59,12 @@ export const CommentItem = ({ comment }: { comment: ICommentary }) => {
       onMouseLeave={onMouse}
     >
       <div className="text-sm flex gap-1 items-center">
-        <span className="font-medium text-primary cursor-pointer">@{comment.author}</span>
+        <Link
+          className="font-medium text-primary cursor-pointer"
+          to={`/user/${comment.author}`}
+        >
+          @{comment.author}
+        </Link>
         {editing ? (
           <textarea
             value={editedText}
@@ -139,9 +150,15 @@ export const CommentItem = ({ comment }: { comment: ICommentary }) => {
         </div>
       )}
 
-      {showReplies &&
-        !!comment.replies_total &&
-        replies.map((reply) => <CommentItem comment={reply} key={reply.id} />)}
+      {showReplies && !!comment.replies_total && (
+        <>
+          {isReplyLoading && <Loading size="small" />}
+          {!isReplyLoading &&
+            replies.map((reply) => (
+              <CommentItem comment={reply} key={reply.id} />
+            ))}
+        </>
+      )}
     </div>
   );
 };

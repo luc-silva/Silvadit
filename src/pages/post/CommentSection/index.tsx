@@ -1,5 +1,6 @@
 import { ChangeEvent, useEffect, useState } from 'react';
 import { CommentItem } from '../CommentItem';
+import { Loading } from '~/components/Loading';
 
 enum SortOptions {
   LIKES = 'likes',
@@ -49,6 +50,7 @@ const commentaryMock: ICommentary[] = [
 
 export const CommentSection = ({ postId }: { postId: string }) => {
   const [sortBy, setSortBy] = useState<SortOptions>(SortOptions.LIKES);
+  const isLoading = false;
 
   const handleSort = (event: ChangeEvent<HTMLSelectElement>) => {
     const { target } = event;
@@ -63,6 +65,7 @@ export const CommentSection = ({ postId }: { postId: string }) => {
     // chamar dados
   }, [postId]);
 
+  if (isLoading) return <Loading />;
   return (
     <div className="mt-4 space-y-4">
       <div className="flex items-center justify-between text-sm">

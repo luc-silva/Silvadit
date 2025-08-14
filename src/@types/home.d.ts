@@ -14,3 +14,21 @@ interface IFeed {
   dateCreated: Date;
   dateEdited: Date | null;
 }
+
+interface IFollowingDetails {
+  forums: IFollowingForum[];
+  users: IFollowingUser[];
+}
+
+interface IFollowingUser {}
+
+interface IFollowingForum {}
+
+interface ITrendingDetails {
+  forums: ITrendingForum[];
+  tags: ITrendingUser[];
+}
+
+interface ITrendingUser {}
+
+interface ITrendingForum {}

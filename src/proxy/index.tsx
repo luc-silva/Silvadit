@@ -17,5 +17,7 @@ export const routes = {
   home: {
     createPost: 'home/post',
     feed: 'home',
+    following: 'home/following',
+    trending: 'home/trending',
   },
 };

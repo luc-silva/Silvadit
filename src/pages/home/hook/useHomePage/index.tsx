@@ -1,6 +1,6 @@
 import { ChangeEvent, useCallback, useState } from 'react';
 import { useAppFeatures } from '~/context/appWrapper';
-import { createPost, getFeed } from '~/service/home';
+import { createPost, getFeed, getFollowingDetails, getTrendingDetails } from '~/service/home';
 
 export const useHomePage = () => {
   const [content, setContent] = useState('');
@@ -9,6 +9,11 @@ export const useHomePage = () => {
   const [image, setImage] = useState<File | null>(null);
   const [isNsfw, setIsNsfw] = useState<boolean>(false);
   const [feedItems, setFeedItems] = useState<IFeed[]>([]);
+  const [followingItems, setFollowingItems] =
+    useState<IFollowingDetails | null>(null);
+  const [trendingItems, setTrendingItems] = useState<ITrendingDetails | null>(
+    null,
+  );
 
   const { session } = useAppFeatures();
 
@@ -80,7 +85,47 @@ export const useHomePage = () => {
       .finally(() => {
         setIsFeedLoading(false);
       });
-  }, [content, isNsfw, title, isFeedError, isFeedLoading, session]);
+  }, [isFeedError, isFeedLoading, session]);
+
+  const [isFollowingLoading, setIsFolowingLoading] = useState(false);
+  const [isFollowingError, setIsFollowingError] = useState(false);
+  const loadFollowing = useCallback(async () => {
+    if (!session) return;
+
+    setIsFolowingLoading(true);
+    setIsFollowingError(false);
+
+    await getFollowingDetails(session.token)
+      .then(({ data }) => {
+        setFollowingItems(data);
+      })
+      .catch(() => {
+        setIsFollowingError(true);
+      })
+      .finally(() => {
+        setIsFolowingLoading(false);
+      });
+  }, [isFollowingError, isFollowingLoading, session]);
+
+  const [isTrendingLoading, setIsTrendingLoading] = useState(false);
+  const [isTrendingError, setIsTrendingError] = useState(false);
+  const loadTrending = useCallback(async () => {
+    if (!session) return;
+
+    setIsTrendingLoading(true);
+    setIsTrendingError(false);
+
+    await getTrendingDetails(session.token)
+      .then(({ data }) => {
+        setTrendingItems(data);
+      })
+      .catch(() => {
+        setIsTrendingError(true);
+      })
+      .finally(() => {
+        setIsTrendingLoading(false);
+      });
+  }, [isTrendingError, isTrendingLoading, session]);
 
   return {
     content,
@@ -99,5 +144,13 @@ export const useHomePage = () => {
     isFeedLoading,
     loadFeed,
     feedItems,
+    loadTrending,
+    isTrendingLoading,
+    isTrendingError,
+    trendingItems,
+    loadFollowing,
+    isFollowingError,
+    isFollowingLoading,
+    followingItems,
   };
 };
