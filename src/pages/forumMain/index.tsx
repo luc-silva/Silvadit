@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { Tabs, Tab, Avatar } from '@mui/material';
+import { useMemo, useState } from 'react';
+import { Avatar } from '@mui/material';
 import {
   Users,
   ShieldStar,
@@ -10,20 +10,33 @@ import {
 import { ForumRequestsTab } from './tabs/request';
 import { PostsTab } from './tabs/post';
 import { ForumMembersTab } from './tabs/member';
+import { ITabItem, Tabs } from '~/components/TabOptions';
 
 export default function ForumPage() {
-  const [tab, setTab] = useState(0);
+  const [tab, setTab] = useState('');
 
   const isFollower = false;
   const isNSFW = true;
   const isPrivate = true;
   const isStaff = true;
 
-  const handleTabChange = (_: any, newValue: number) => setTab(newValue);
+  const forumTabs: ITabItem[] = useMemo(() => {
+    return [
+      {
+        text: 'Postagem',
+        value: 'posts',
+      },
+      {
+        text: 'Solicitações',
+        value: 'requests',
+      },
+      { text: 'Membros', value: 'members' },
+    ];
+  }, []);
 
   return (
     <div className="max-w-6xl mx-auto px-4  flex gap-6 text-bg  h-full relative">
-      <div className="flex-1 w-5xl bg-surface border border-border h-full">
+      <div className="flex-1 w-5xl bg-surface border border-border h-full  shadow-sm">
         <div className="relative h-60 w-full bg-bg rounded-lg overflow-hidden">
           <img
             src="/banner-placeholder.jpg"
@@ -94,36 +107,17 @@ export default function ForumPage() {
         </div>
 
         <div className="bg-bg text-text">
-          <Tabs value={tab} onChange={handleTabChange}>
-            <Tab
-              label="Postagens"
-              sx={{
-                color: 'var(--color-text)',
-              }}
-            />
-            {isStaff && (
-              <Tab
-                label="Solicitações"
-                sx={{
-                  color: 'var(--color-text)',
-                }}
-              />
-            )}
-            <Tab
-              label="Membros"
-              sx={{
-                color: 'var(--color-text)',
-              }}
-            />
-          </Tabs>
+          <Tabs activeTab={tab} onClickTab={setTab} tabs={forumTabs} />
         </div>
 
         <div className="mt-4">
-          {tab === 0 && (
+          {tab === 'post' && (
             <PostsTab isFollower={isFollower} isPrivate={isPrivate} />
           )}
-          {tab === 1 && isStaff && <ForumRequestsTab isStaff={isStaff} />}
-          {tab === 2 && <ForumMembersTab isStaff={isStaff} />}
+          {tab === 'requests' && isStaff && (
+            <ForumRequestsTab isStaff={isStaff} />
+          )}
+          {tab === 'membeers' && <ForumMembersTab isStaff={isStaff} />}
         </div>
       </div>
 
@@ -145,7 +139,7 @@ export default function ForumPage() {
             { name: 'usuario3' },
           ]}
         />
-        <div className="bg-surface border border-border p-4 flex gap-4">
+        <div className="bg-surface border border-border p-4 flex gap-4  shadow-sm">
           <div>
             <h2 className="text-subtitle">Seguidores</h2>
             <p className="text-text">1.204</p>
@@ -170,7 +164,7 @@ function SidebarCard({
   items: { name: string; role?: string }[];
 }) {
   return (
-    <div className="bg-surface border border-border p-4">
+    <div className="bg-surface border border-border p-4  shadow-sm">
       <div className="flex items-center gap-2 mb-2 text-text font-semibold">
         {icon}
         <span>{title}</span>
