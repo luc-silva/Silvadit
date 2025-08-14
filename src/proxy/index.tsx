@@ -2,9 +2,10 @@ export const routes = {
   user: {
     base: '/user',
     listUsers: '/users/',
-    userDetails: (id: string) => `/user/${id}`,
-    listUserFriends: (id: string) => `/user/${id}/friends`,
-    listUserForums: (id: string) => `/user/${id}/forums`,
+    getUserDetails: (id: string) => `/user/${id}`,
+    getUserFollowedForums: (id: string) => `/user/${id}/following/forums`,
+    getUserFollowedUsers: (id: string) => `/user/${id}/following/friends`,
+    getUserFollowers: (id: string) => `/user/${id}/forums`,
   },
   auth: {
     base: '/auth',
@@ -12,5 +13,9 @@ export const routes = {
     register: '/auth/register',
     update: '/update',
     delete: '/auth/delete',
+  },
+  home: {
+    createPost: 'home/post',
+    feed: 'home',
   },
 };
