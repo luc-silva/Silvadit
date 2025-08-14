@@ -1,4 +1,4 @@
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import {
   GearIcon,
   SignOutIcon,
@@ -10,11 +10,14 @@ import {
 } from '@phosphor-icons/react';
 import { useMemo, useState, useRef, useEffect } from 'react';
 import { Avatar } from '@mui/material';
+import { useAppFeatures } from '~/context/appWrapper';
 
 export const Header = () => {
   const location = useLocation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const menuRef = useRef(null);
+  const { session, handleLogout } = useAppFeatures();
+  const navigate = useNavigate();
 
   const disableHeader = useMemo(() => {
     const excludedPaths = ['/', '/login', '/register'];
@@ -23,12 +26,46 @@ export const Header = () => {
 
   const changeTheme = () => {
     const body = document.getElementById('app-body');
-    console.log(body);
     if (body) {
       const isDark = body.classList.contains('dark');
 
       if (isDark) body.classList.replace('dark', 'light');
       if (!isDark) body.classList.replace('light', 'dark');
+    }
+  };
+
+  const handleRedirectToProfile = () => {
+    if (session) {
+      navigate(`/user/${session.id}`);
+      setIsMenuOpen(false);
+    }
+  };
+
+  const handleRedirectToCreateForum = () => {
+    if (session) {
+      navigate(`/forum/create`);
+      setIsMenuOpen(false);
+    }
+  };
+
+  const handleRedirectToSettings = () => {
+    if (session) {
+      navigate(`/settings`);
+      setIsMenuOpen(false);
+    }
+  };
+
+  const handleRedirectToLogin = () => {
+    if (session) {
+      navigate(`/login`);
+      setIsMenuOpen(false);
+    }
+  };
+
+  const handleRedirectToRegister = () => {
+    if (session) {
+      navigate(`/register`);
+      setIsMenuOpen(false);
     }
   };
 
@@ -70,64 +107,93 @@ export const Header = () => {
           </div>
         </div>
 
-        <div className="flex items-center gap-4 relative" ref={menuRef}>
-          <button className="text-text hover:text-subtitle transition">
-            <ChatTeardropDotsIcon size={20} />
-          </button>
+        {!session && (
+          <div className="flex items-center gap-4 relative">
+            <button
+              className="flex items-center justify-center gap-2 w-fit px-3 py-2 bg-primary text-surface rounded-md text-sm hover:bg-primary/90 transition"
+              onClick={handleRedirectToRegister}
+            >
+              Criar Contar
+            </button>
+            <button
+              className="flex items-center justify-center gap-2 w-full px-3 py-2 bg-surface text-primary rounded-md text-sm hover:bg-surface/90 transition border border-primary"
+              onClick={handleRedirectToLogin}
+            >
+              Logar
+            </button>
+          </div>
+        )}
 
-          <button
-            className="text-text hover:text-subtitle transition"
-            onClick={changeTheme}
-          >
-            <SunIcon size={20} />
-          </button>
+        {session && (
+          <div className="flex items-center gap-4 relative" ref={menuRef}>
+            <button className="text-text hover:text-subtitle transition">
+              <ChatTeardropDotsIcon size={20} />
+            </button>
 
-          <button
-            onClick={() => setIsMenuOpen((prev) => !prev)}
-            className="w-9 h-9 rounded-full overflow-hidden border border-border hover:ring-2 ring-primary transition"
-          >
-            {true ? (
-              <Avatar
-                sx={{
-                  width: 'calc(var(--spacing) * 9)',
-                  height: 'calc(var(--spacing) * 9)',
-                }}
-              />
-            ) : (
-              <img
-                src={'avatarPlaceholder'}
-                alt="avatar"
-                className="w-full h-full object-cover"
-              />
-            )}
-          </button>
+            <button
+              className="text-text hover:text-subtitle transition"
+              onClick={changeTheme}
+            >
+              <SunIcon size={20} />
+            </button>
 
-          {isMenuOpen && (
-            <div className="absolute right-0 top-12 mt-2 w-52 bg-surface border border-border shadow-md rounded-lg  z-50 text-sm">
-              <div className="px-2 pb-2 mt-2">
-                <button
-                  className="flex items-center justify-center gap-2 w-full px-3 py-2 bg-primary text-surface rounded-md text-sm hover:bg-primary/90 transition"
-                  onClick={() => {
-                    setIsMenuOpen(false);
-                    console.log('Criar fórum clicado');
+            <button
+              onClick={() => setIsMenuOpen((prev) => !prev)}
+              className="w-9 h-9 rounded-full overflow-hidden border border-border hover:ring-2 ring-primary transition"
+            >
+              {true ? (
+                <Avatar
+                  sx={{
+                    width: 'calc(var(--spacing) * 9)',
+                    height: 'calc(var(--spacing) * 9)',
                   }}
-                >
-                  <PlusIcon size={16} />
-                  Criar fórum
-                </button>
-              </div>
+                />
+              ) : (
+                <img
+                  src={'avatarPlaceholder'}
+                  alt="avatar"
+                  className="w-full h-full object-cover"
+                />
+              )}
+            </button>
 
-              <MenuItem icon={<UserIcon size={16} />} label="Perfil" />
-              <MenuItem
-                icon={<ChatTeardropDotsIcon size={16} />}
-                label="Mensagens"
-              />
-              <MenuItem icon={<GearIcon size={16} />} label="Configurações" />
-              <div className="border-t border-border" />
-              <MenuItem icon={<SignOutIcon size={16} />} label="Sair" danger />
-            </div>
-          )}
-        </div>
+            {isMenuOpen && (
+              <div className="absolute right-0 top-12 mt-2 w-52 bg-surface border border-border shadow-md rounded-lg  z-50 text-sm">
+                <div className="px-2 pb-2 mt-2">
+                  <button
+                    className="flex items-center justify-center gap-2 w-full px-3 py-2 bg-primary text-surface rounded-md text-sm hover:bg-primary/90 transition"
+                    onClick={handleRedirectToCreateForum}
+                  >
+                    <PlusIcon size={16} />
+                    Criar fórum
+                  </button>
+                </div>
+
+                <MenuItem
+                  icon={<UserIcon size={16} />}
+                  label="Perfil"
+                  onClick={handleRedirectToProfile}
+                />
+                <MenuItem
+                  icon={<ChatTeardropDotsIcon size={16} />}
+                  label="Mensagens"
+                />
+                <MenuItem
+                  icon={<GearIcon size={16} />}
+                  label="Configurações"
+                  onClick={handleRedirectToSettings}
+                />
+                <div className="border-t border-border" />
+                <MenuItem
+                  icon={<SignOutIcon size={16} />}
+                  label="Sair"
+                  danger
+                  onClick={handleLogout}
+                />
+              </div>
+            )}
+          </div>
+        )}
       </div>
     </header>
   );
@@ -137,13 +203,16 @@ function MenuItem({
   icon,
   label,
   danger = false,
+  onClick,
 }: {
   icon: React.ReactNode;
   label: string;
   danger?: boolean;
+  onClick?: () => void;
 }) {
   return (
     <button
+      onClick={onClick}
       className={`flex items-center gap-2 px-4 py-2 w-full text-left hover:bg-bg transition ${
         danger ? 'text-danger-primary hover:bg-danger-primary/20' : 'text-text'
       }`}
