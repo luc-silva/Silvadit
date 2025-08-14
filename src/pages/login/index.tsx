@@ -1,17 +1,17 @@
 import { Button, TextField } from '@mui/material';
-import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useLoginPage } from './hooks';
 
 export function LoginPage() {
   const { handleLogin, handlePassword, login, password, loadLogin } =
     useLoginPage();
+
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     await loadLogin().then(() => {
-      navigate('/forum');
+      navigate('/home');
     });
   };
 
