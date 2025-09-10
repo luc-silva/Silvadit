@@ -1,50 +1,66 @@
-# React + TypeScript + Vite
+# Silvadit
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Silvadit é uma plataforma de fórum moderna, minimalista e open source, construída com React, TypeScript, Vite, TailwindCSS e Material UI.  
+A API utilizada é o [silvadit-api](https://github.com/seu-usuario/silvadit-api).
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Tecnologias
 
-## Expanding the ESLint configuration
+- [React](https://react.dev/)
+- [TypeScript](https://www.typescriptlang.org/)
+- [Vite](https://vitejs.dev/)
+- [TailwindCSS](https://tailwindcss.com/)
+- [Material UI](https://mui.com/)
+- [Phosphor Icons](https://phosphoricons.com/)
+- [pnpm](https://pnpm.io/) (gerenciador de pacotes)
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+---
 
-- Configure the top-level `parserOptions` property like this:
+## Como rodar o projeto
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+1. **Clone o repositório**
+   ```sh
+   git clone https://github.com/seu-usuario/silvadit.git
+   cd silvadit
+   ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+2. **Instale as dependências**
+   ```sh
+   pnpm install
+   ```
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+3. **Configure o ambiente**
+   - Crie um arquivo `.env` baseado no `.env.example` (se existir).
+   - Certifique-se de que a [silvadit-api](https://github.com/seu-usuario/silvadit-api) esteja rodando.
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+4. **Inicie o projeto**
+   ```sh
+   pnpm dev
+   ```
+
+---
+
+## Imagens
+
+<div align="center">
+  <!-- Substitua pelos seus screenshots reais -->
+  <img src="docs/screenshot-home.png" alt="Home" width="600"/>
+  <img src="docs/screenshot-forum.png" alt="Página do Fórum" width="600"/>
+  <img src="docs/screenshot-profile.png" alt="Perfil do Usuário" width="600"/>
+</div>
+
+---
+
+## Scripts úteis
+
+- `pnpm dev` — inicia o servidor de desenvolvimento
+- `pnpm build` — gera a build de produção
+- `pnpm lint` — executa o linter
+- `pnpm test` — executa os testes
+
+---
+
+## Sobre a API
+
+A API utilizada é o [silvadit-api](https://github.com/seu-usuario/silvadit-api).  
