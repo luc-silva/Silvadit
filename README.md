@@ -48,6 +48,8 @@ A API utilizada é o [silvadit-api](https://github.com/seu-usuario/silvadit-api)
 <img width="1901" height="946" alt="Screenshot 2025-09-10 174819" src="https://github.com/user-attachments/assets/0c6148d0-487d-4b5c-a435-c318e6c3063d" />
 <img width="1901" height="947" alt="Screenshot 2025-09-10 174852" src="https://github.com/user-attachments/assets/299b20c9-eb23-4e94-8788-5f3cced14e3c" />
 <img width="1909" height="949" alt="Screenshot 2025-09-10 174903" src="https://github.com/user-attachments/assets/95689c18-0398-459a-81dc-5441f86cf5a2" />
+<img width="1914" height="945" alt="image" src="https://github.com/user-attachments/assets/00a2502b-6e2c-4e15-9595-ab43bc123ad8" />
+
 
 
 ---
